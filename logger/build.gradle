@@ -1,0 +1,5 @@
+dependencies {
+    compile "org.apache.logging.log4j:log4j-api:${kit.apache}"
+    compile "org.apache.logging.log4j:log4j-core:${kit.apache}"
+    compile "org.jetbrains.kotlin:kotlin-reflect:${kit.kotlin}"
+}
