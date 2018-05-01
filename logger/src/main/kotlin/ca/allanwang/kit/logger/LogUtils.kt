@@ -38,8 +38,11 @@ interface Loggable {
  *
  * companion object: WithLogging()
  */
-open class WithLogging : Loggable {
-    override val log: Logger by lazy { this.logger() }
+open class WithLogging(name: String? = null) : Loggable {
+    override val log: Logger by lazy {
+        if (name != null) LogManager.getLogger(name)
+        else this.logger()
+    }
 }
 
 object LogUtils {
