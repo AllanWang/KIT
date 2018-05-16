@@ -49,4 +49,15 @@ open class PropHolder(val props: Properties) {
         get(key)
     }
 
+    /**
+     * Prop delegation to return an boolean or default
+     */
+    fun boolean(key: String, default: Boolean = false, errorMessage: String? = null): Lazy<Boolean> = lazy {
+        nonnull(when (get(key)?.toLowerCase()) {
+            "true" -> true
+            "false" -> false
+            else -> null
+        }, default, errorMessage)
+    }
+
 }
