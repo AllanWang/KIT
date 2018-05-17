@@ -27,7 +27,7 @@ dependencies {
     compile "ca.allanwang:kit:$KIT"
     
     // to include specific module
-    compile "ca.allanwang.kit:logger:$KIT
+    compile "ca.allanwang.kit:logger:$KIT"
 }
 ```
 
