@@ -47,9 +47,11 @@ open class WithLogging(name: String? = null) : Loggable {
 
 object LogUtils {
 
-    fun setLoggingLevel(log: Logger, level: Level) {
+    fun setLoggingLevel(log: Logger?, level: Level) {
+        val log = log ?: LogManager.getLogger("LogUtils")
         log.info("Updating log level to $level")
-        val ctx = LogManager.getContext(false) as LoggerContext
+        val ctx = LogManager.getContext(false) as? LoggerContext
+                ?: return log.warn("Could not change log level")
         val config = ctx.configuration
         val loggerConfig = config.getLoggerConfig(LogManager.ROOT_LOGGER_NAME)
         loggerConfig.level = level
