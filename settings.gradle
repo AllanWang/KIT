@@ -1,5 +1,5 @@
 include 'logger', 'props',
 //        'retrofit', 'test',
-        'gradle-plugin', 'utils'
+        'gradle-plugin', 'utils', 'rx'
 
 project(":gradle-plugin").projectDir = file("buildSrc")
