@@ -10,9 +10,9 @@ More notably:
 
 | Model | Contents |
 | --- | --- |
-| [`:kotlin`](kotlin#readme) | Functions for kotlin without any dependencies |
 | [`:logger`](logger#readme) | Class based logging tags |
 | [`:props`](props#readme) | Simple lazy loaded properties holder |
+| [`:retrofit`](retrofit#readme) | Helper to generate retrofit interfaces with one function |
 
 Use it by adding
 
