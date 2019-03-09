@@ -1,6 +1,5 @@
 package ca.allanwang.kit.retrofit
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -42,9 +41,6 @@ inline fun <reified T> createRetrofitApi(url: String, configBuilder: RetrofitApi
             .addConverterFactory(MoshiConverterFactory.create(moshi.build()))
             .client(client.build())
 
-    if (config.addCoroutineAdapter)
-        retrofit.addCallAdapterFactory(CoroutineCallAdapterFactory())
-
     config.retrofitBuilder(retrofit)
 
     return retrofit.build().create(T::class.java)
@@ -60,13 +56,6 @@ class RetrofitApiConfig {
      * If supplied, they will be added as a cache-control header
      */
     var maxCache: Pair<Int, Int>? = null
-    /**
-     * Enable to automatically add a coroutine call adapter factory.
-     * Currently, it is not yet supported directly in Retrofit
-     */
-    var addCoroutineAdapter: Boolean = false
-
-
     /**
      * Additional builder that will be applied after all other client configs.
      * Note that the [Helper] supplies some builders if you wish to use them.

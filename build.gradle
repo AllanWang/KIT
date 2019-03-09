@@ -8,6 +8,7 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kit.kotlin}"
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:${kit.spotless}"
     }
 }
 
@@ -24,8 +25,10 @@ subprojects {
     apply plugin: 'kotlin'
     apply plugin: 'maven'
 
+    apply from: '../spotless.gradle'
+
     repositories {
-        mavenCentral()
+        jcenter()
     }
 
     test {
