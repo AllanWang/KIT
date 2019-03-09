@@ -69,11 +69,11 @@ class RetrofitApiConfig {
     /**
      * Supply to automatically add an authorization token header whenever the token is not blank
      */
-    var tokenRetriever: (() -> String)? = null
+    var tokenRetriever: (() -> String?)? = null
     /**
      * Supply to automatically add a cookie header whenever the cookie is not blank
      */
-    var cookieRetriever: (() -> String)? = null
+    var cookieRetriever: (() -> String?)? = null
     /**
      * Pair of cache values denoting age and stale.
      * If supplied, they will be added as a cache-control header

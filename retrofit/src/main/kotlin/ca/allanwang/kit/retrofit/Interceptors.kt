@@ -42,20 +42,20 @@ private const val APPLICATION_JSON = "application/json;charset=UTF-8"
  * Injects the token to each request
  * [token] will be called with each request, and will be added as an authorization token if it is not blank
  */
-class TokenInterceptor(private val token: () -> String) : BaseInterceptor() {
+class TokenInterceptor(private val token: () -> String?) : BaseInterceptor() {
 
     override fun apply(request: Request.Builder, originalChain: Interceptor.Chain) {
         val token = token()
-        if (token.isNotBlank())
+        if (token?.isNotBlank() == true)
             request.addHeader("Authorization", "Token $token")
     }
 }
 
-class CookieInterceptor(private val cookie: () -> String) : BaseInterceptor() {
+class CookieInterceptor(private val cookie: () -> String?) : BaseInterceptor() {
 
     override fun apply(request: Request.Builder, originalChain: Interceptor.Chain) {
         val cookie = cookie()
-        if (cookie.isNotBlank())
+        if (cookie?.isNotBlank() == true)
             request.addHeader("Cookie", cookie)
     }
 }
