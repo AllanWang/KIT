@@ -33,28 +33,32 @@ inline fun <reified T> createRetrofitApi(url: String, configBuilder: RetrofitApi
     config.maxCache?.apply {
         client.addNetworkInterceptor {
             it.proceed(it.request()).newBuilder()
-                    .header(
-                            "Cache-Control",
-                            String.format("max-age=%d, only-if-cached, max-stale=%d", first, second)
-                    )
-                    .build()
+                .header(
+                    "Cache-Control",
+                    String.format("max-age=%d, only-if-cached, max-stale=%d", first, second)
+                )
+                .build()
         }
     }
     config.tokenRetriever?.apply {
         client.addInterceptor(TokenInterceptor(this))
     }
 
+    config.cookieRetriever?.apply {
+        client.addInterceptor(CookieInterceptor(this))
+    }
+
     config.clientBuilder(client)
 
     val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
+        .add(KotlinJsonAdapterFactory())
 
     config.moshiBuilder(moshi)
 
     val retrofit = Retrofit.Builder()
-            .baseUrl(url)
-            .addConverterFactory(MoshiConverterFactory.create(moshi.build()))
-            .client(client.build())
+        .baseUrl(url)
+        .addConverterFactory(MoshiConverterFactory.create(moshi.build()))
+        .client(client.build())
 
     config.retrofitBuilder(retrofit)
 
@@ -66,6 +70,10 @@ class RetrofitApiConfig {
      * Supply to automatically add an authorization token header whenever the token is not blank
      */
     var tokenRetriever: (() -> String)? = null
+    /**
+     * Supply to automatically add a cookie header whenever the cookie is not blank
+     */
+    var cookieRetriever: (() -> String)? = null
     /**
      * Pair of cache values denoting age and stale.
      * If supplied, they will be added as a cache-control header
@@ -86,8 +94,9 @@ class RetrofitApiConfig {
     var retrofitBuilder: (builder: Retrofit.Builder) -> Unit = {}
 
     companion object Helper {
-        fun loggingInterceptor(level: HttpLoggingInterceptor.Level = HttpLoggingInterceptor.Level.BASIC): (builder: OkHttpClient.Builder) -> Unit = {
-            it.addInterceptor(HttpLoggingInterceptor().setLevel(level))
-        }
+        fun loggingInterceptor(level: HttpLoggingInterceptor.Level = HttpLoggingInterceptor.Level.BASIC): (builder: OkHttpClient.Builder) -> Unit =
+            {
+                it.addInterceptor(HttpLoggingInterceptor().setLevel(level))
+            }
     }
 }

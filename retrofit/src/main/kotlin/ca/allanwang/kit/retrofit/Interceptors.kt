@@ -50,3 +50,12 @@ class TokenInterceptor(private val token: () -> String) : BaseInterceptor() {
             request.addHeader("Authorization", "Token $token")
     }
 }
+
+class CookieInterceptor(private val cookie: () -> String) : BaseInterceptor() {
+
+    override fun apply(request: Request.Builder, originalChain: Interceptor.Chain) {
+        val cookie = cookie()
+        if (cookie.isNotBlank())
+            request.addHeader("Cookie", cookie)
+    }
+}
