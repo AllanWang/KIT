@@ -40,6 +40,9 @@ inline fun <reified T> createRetrofitApi(url: String, configBuilder: RetrofitApi
                 .build()
         }
     }
+
+    config.clientBuilder(client)
+
     config.tokenRetriever?.apply {
         client.addInterceptor(TokenInterceptor(this))
     }
@@ -48,16 +51,9 @@ inline fun <reified T> createRetrofitApi(url: String, configBuilder: RetrofitApi
         client.addInterceptor(CookieInterceptor(this))
     }
 
-    config.clientBuilder(client)
-
-    val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-
-    config.moshiBuilder(moshi)
-
     val retrofit = Retrofit.Builder()
         .baseUrl(url)
-        .addConverterFactory(MoshiConverterFactory.create(moshi.build()))
+        .addConverterFactory(config.moshiSupplier())
         .client(client.build())
 
     config.retrofitBuilder(retrofit)
@@ -87,7 +83,11 @@ class RetrofitApiConfig {
     /**
      * Additional builder that will be applied after all other moshi configs
      */
-    var moshiBuilder: (builder: Moshi.Builder) -> Unit = {}
+    var moshiSupplier: () -> MoshiConverterFactory = {
+        val moshi = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+        MoshiConverterFactory.create(moshi.build())
+    }
     /**
      * Additional builder that will be applied after all other retrofit configs
      */
